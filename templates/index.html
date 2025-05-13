@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Analisador de Terreno</title>
+</head>
+
+<body>
+    <header class="container">
+        <div class="content">
+            <span class="blur"></span>
+            <span class="blur"></span>
+            <H1>Analisador de Terreno</H1>
+            <h4>Este é um analisador básico de terreno que calcula sua área total; aproveitada; por pavimento e número de pavimentos.</h4>
+        </div>
+        <div class="image">
+            
+        </div>
+    </header>
+
+    <section class="container">
+        <div class="pricing">
+            <div class="card">
+                <div class="content">
+                    <form action="/" method="post">
+                        <h5>Código do terreno:<br>
+                        <input class="input" name="codigo" required>
+                        </h5><br><br>
+                        <h5>Largura (m):<br>
+                        <input class="input" name="largura" type="number" step="0.01">
+                        </h5><br><br>
+                        <h5>Altura (m):<br>
+                        <input class="input" name="altura" type="number" step="0.01">
+                        </h5><br><br>
+                        <h5>Área (m²):<br>
+                        <input class="input" name="area" type="number" step="0.01">
+                        </h5><br><br>
+                        <h5>Macrozona:<br>
+                        <input class="input" name="macro" required>
+                        </h5><br><br>
+                        <h5>Zona:<br>
+                        <input class="input" name="zona" required>
+                        </h5><br><br>
+                        <button class="btn" name="submit">Analisar</button>
+                    </form>
+                </div>
+            </div>           
+        </div>
+    </section>
+    <section class="container">
+        <div class="pricing">
+            <div class="card">
+                <div class="content">
+                    {% if resultado %}
+                        {% if resultado.erro %}
+                            <div class="alert alert-danger">{{ resultado.erro }}</div>
+                        {% else %}
+                            <ul>
+                                <h5>Bairro: {{ resultado.bairro }}</h5>
+                                <h5>Quadra: {{ resultado.quadra }}</h5>
+                                <h5>Lote: {{ resultado.lote }}</h5>
+                                <h5>Área total: {{ resultado.area_total }}m²</h5>
+                                <h5>Área aproveitada: {{ resultado.area_aproveitada }}m²</h5>
+                                <h5>Área por pavimento: {{ resultado.area_por_pavimento }}m²</h5>
+                                <h5>Qtd. de pavimentos: {{ resultado.num_de_pavimentos }}</h5>
+                                <h5><a href="{{ resultado.link_do_overlay }}" target="_blank">Link do overlay</a></h5>
+                            </ul>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
