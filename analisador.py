@@ -83,7 +83,8 @@ def analisa_terreno(codigo, largura, altura, area_input, macrozona, zoneamento):
 
     valores = [decimal.Decimal(largura), decimal.Decimal(altura)]
     macro = macrozona
-    IDAP = decimal.Decimal(float(((macrozonas.get(macro))[0])))
+    valor = macrozonas.get(macro, [0]) # valor padrão: [0]
+    IDAP = decimal.Decimal(float(valor[0]))
     zona = zoneamento
     TO = decimal.Decimal(float(((zonas.get(zona))[0])))
 
