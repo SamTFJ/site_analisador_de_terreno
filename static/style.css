@@ -21,7 +21,7 @@ a{
 
 body{
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to right, #bdbaba, rgb(175, 123, 123));
+    background: linear-gradient(to left, #865a5a, rgb(255, 255, 255));
 }
 
 .link a{
@@ -108,19 +108,21 @@ header .image{
     position: relative;
 }
 
-header .image::before{
-    content: "JJales Arquitetura";
+.image img {
     position: absolute;
-    top: 0;
-    left: 10%;
-    transform: translateX(-50%);
-    font-size: 15rem;
-    font-weight: 600;
-    line-height: 20rem;
-    color: #ff0000;
-    opacity: 0.2;
-    z-index: -100;
-    opacity: 20%;
+    background-image: url('/static/images/jailtonlogo2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 1200px;
+    width: 1200px;
+    opacity: 50%;
+    border-radius: 5em;
+    border: 2px solid transparent;
+    display: flex;
+    right: auto;
+    left: 23.5%;
+    top:20%
 }
 
 header .image img{
@@ -222,4 +224,3 @@ section .header{
     background-color: #af1e1e;
     border-color: #af1e1e;
 }
-
