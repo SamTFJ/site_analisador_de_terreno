@@ -30,7 +30,7 @@ def analisa_terreno(codigo, largura, altura, area_input, macrozona, zoneamento):
     }
 
     zonas = {
-        #Zonas  /  TO máxima  / TAP mínima
+        #Zonas  /  TO máxima  / TAP mínima  / recuo Frontal  / recuo lateral  /  Recuo Fundo
         "zh1": [50,10],
         "zh2": [55,5],
         "zh3": [50,5],
@@ -74,7 +74,7 @@ def analisa_terreno(codigo, largura, altura, area_input, macrozona, zoneamento):
                 for bairro in bairros:
                     if bairro in text:
                         bairro_encontrado = bairro
-                        quadra = int(loc[3:6])
+                        quadra = int(loc[3:5])
                         lote = int(lote)     
                         break
 
@@ -83,8 +83,8 @@ def analisa_terreno(codigo, largura, altura, area_input, macrozona, zoneamento):
 
     valores = [decimal.Decimal(largura), decimal.Decimal(altura)]
     macro = macrozona
-    valormz = macrozonas.get(macro, [0]) # valor padrão: [0]
-    IDAP = decimal.Decimal(float(valormz[0]))
+    valormz = macrozonas.get(macro, [0]) # valor padrão: [0], para não interferir com o decimal
+    IDAP = decimal.Decimal(float(valormz[0])) # valor padrão [0]
     zona = zoneamento
     valorz = zonas.get(zona, [0])
     TO = decimal.Decimal(float(valorz[0]))
@@ -94,12 +94,14 @@ def analisa_terreno(codigo, largura, altura, area_input, macrozona, zoneamento):
         area_aproveitada = area*IDAP
         area_por_pav = area*(TO/100)
         pavimentos = (area*IDAP)/((TO/100)*area)
+        taxa_de_ocupaçao = (area_por_pav / area)
 
     else:
         area = decimal.Decimal(valores[0] * valores[1])
         area_aproveitada = area*IDAP
         area_por_pav = area*(TO/100)
         pavimentos = (area*IDAP)/((TO/100)*area)
+        taxa_de_ocupaçao = (area_por_pav / area)
 
     return{
         "bairro": bairro_encontrado,
@@ -108,6 +110,8 @@ def analisa_terreno(codigo, largura, altura, area_input, macrozona, zoneamento):
         "area_total": str(area),
         "area_aproveitada": str(area_aproveitada),
         "area_por_pavimento": str(area_por_pav),
+        "area_com_escadarias": str((area_por_pav*decimal.Decimal(0.7)).quantize(decimal.Decimal('0.001'))),
         "num_de_pavimentos": str(pavimentos),
+        "taxa_de_ocupaçao": str(taxa_de_ocupaçao*100),
         "link_do_overlay": url
     }

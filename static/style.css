@@ -8,11 +8,6 @@
     box-sizing: border-box;
 }
 
-img{
-    width: 100%;
-    border-radius: 15%;
-    display: flex;
-}
 
 a{
     text-decoration: none;
@@ -22,23 +17,6 @@ a{
 body{
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(to left, #865a5a, rgb(255, 255, 255));
-}
-
-.link a{
-    position: relative;
-    padding-bottom: 0.75rem;
-    color: #fff;
-}
-
-.link a::after{
-    content: "";
-    position: absolute;
-    height: 2px;
-    width: 0;
-    bottom: 0;
-    left: 0;
-    background-color: #1d4ed8;
-    transition: all 0.3s ease;
 }
 
 .link a:hover::after{
@@ -108,23 +86,6 @@ header .image{
     position: relative;
 }
 
-.image img {
-    position: absolute;
-    background-image: url('/static/images/jailtonlogo2.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    height: 1200px;
-    width: 1200px;
-    opacity: 50%;
-    border-radius: 5em;
-    border: 2px solid transparent;
-    display: flex;
-    right: auto;
-    left: 23.5%;
-    top:20%
-}
-
 header .image img{
     max-width: 600px;
     margin: auto;
@@ -156,71 +117,49 @@ section .header{
 
 .pricing .card .content .input{
     border-radius: 2.5cm;
+    background-color: #726565;
 }
 
+.pricing .card .content{
+    opacity: 100%;
+}
 
 .pricing .card{
-    padding: 3rem 2rem;
-    background-color: #27272a;
+    background-image: url('/static/images/jailtonlogo2.jpg');
+    background-size: cover;
+    padding: 15rem;
     display: flex;
     flex-direction: column;
     border: 2px solid transparent;
     border-radius: 15px;
     transition: all 0.3s ease;
+    opacity: 80%;
 }
 
 .pricing .card:hover{
     background-color: #323232;
-    border-color: #fff;
-}
-
-.pricing .card .content{
-    flex: 1;
-    margin-bottom: 0.5rem;
-    border-radius: 20%;
-}
-
-.pricing .card h4{
-    margin-bottom: 1rem;
-    color: #fff;
-    font-size: 1.2rem;
-    font-weight: 500;
+    border-color: #000000;
 }
 
 .pricing .card h5{
-    margin-bottom: 1rem;
-    color: #fff;
+    margin-bottom: 0.1rem;
+    color: #000000;
     font-size: 1rem;
-    font-weight: 500;
-}
-
-.pricing .card h3{
-    color: #fff;
-    padding-bottom: 1rem;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-    font-weight: 600;
-    border-bottom: 2px dashed #fff;
-}
-
-.pricing .card p{
-    color: #fff;
-    margin-bottom: 0.75rem;
-}
-
-.pricing .card p i{
-    color: #ccc;
-    font-size: 1.2rem;
-    margin-right: 0.3rem;
+    font-weight: 700;
 }
 
 .pricing .card button{
     color: #fff;
-    background-color: transparent;
+    background-color: black;
     border: 2px solid #fff;
 }
 
 .pricing .card button:hover{
     background-color: #af1e1e;
     border-color: #af1e1e;
+}
+
+#saida-soma {
+    font-size: 1.5em;
+    font-weight: 700;
 }

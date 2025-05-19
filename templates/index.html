@@ -6,9 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Analisador de Terreno</title>
+    <style>
+        .loading { opacity: 0.5; pointer-events: none; }
+    </style>
 </head>
 
 <body>
+
+    <!-- Header -->
     <header class="container">
         <div class="content">
             <span class="blur"></span>
@@ -17,6 +22,8 @@
             <h4>Este é um analisador básico de terreno que calcula sua área total; aproveitada; por pavimento e número de pavimentos.</h4>
         </div>
     </header>
+
+    <!-- Form principal -->
     <div class="image">
         <img>
     </div>
@@ -26,52 +33,276 @@
                 <div class="content">
                     <form action="/" method="post">
                         <h5>Código do terreno:<br>
-                        <input class="input" name="codigo" required>
+                        <input id="campoCodigo" class="input" name="codigo" required>
                         </h5><br><br>
-                        <h5>Largura (m):<br>
-                        <input class="input" name="largura" type="number" step="0.01">
-                        </h5><br><br>
-                        <h5>Altura (m):<br>
-                        <input class="input" name="altura" type="number" step="0.01">
-                        </h5><br><br>
-                        <h5>Área (m²):<br>
-                        <input class="input" name="area" type="number" step="0.01">
-                        </h5><br><br>
-                        <h5>Macrozona:<br>
-                        <input class="input" name="macro" required>
-                        </h5><br><br>
-                        <h5>Zona:<br>
-                        <input class="input" name="zona" required>
-                        </h5><br><br>
+
+
+                        <div class="toggle-field">
+                            <h5>Largura (m):<br>
+                            <input class="input" name="largura" type="number" step="0.01">
+                            </h5><br><br>
+                            <h5>Altura (m):<br>
+                            <input class="input" name="altura" type="number" step="0.01">
+                            </h5><br><br>
+                            <h5>Área (m²):<br>
+                            <input class="input" name="area" type="number" step="0.01">
+                            </h5><br><br>
+                            <h5>Macrozona:<br>
+                            <input class="input" name="macro">
+                            </h5><br><br>
+                            <h5>Zona:<br>
+                            <input class="input" name="zona">
+                            </h5><br><br>
+                        </div>
+
+
                         <button class="btn" name="submit">Analisar</button>
                     </form>
                 </div>
             </div>           
         </div>
     </section>
+
+    <!-- Resultado principal -->
     <section class="container">
         <div class="pricing">
-            <div class="card">
-                <div class="content">
-                    {% if resultado %}
-                        {% if resultado.erro %}
-                            <div class="alert alert-danger">{{ resultado.erro }}</div>
-                        {% else %}
-                            <ul>
-                                <h5>Bairro: {{ resultado.bairro }}</h5>
-                                <h5>Quadra: {{ resultado.quadra }}</h5>
-                                <h5>Lote: {{ resultado.lote }}</h5>
-                                <h5>Área total: {{ resultado.area_total }}m²</h5>
-                                <h5>Área aproveitada: {{ resultado.area_aproveitada }}m²</h5>
-                                <h5>Área por pavimento: {{ resultado.area_por_pavimento }}m²</h5>
-                                <h5>Qtd. de pavimentos: {{ resultado.num_de_pavimentos }}</h5>
-                                <h5><a href="{{ resultado.link_do_overlay }}" target="_blank">Link do overlay</a></h5>
-                            </ul>
-                        {% endif %}
+            <div class="content">
+                {% if resultado %}
+                    {% if resultado.erro %}
+                        <div class="alert alert-danger">{{ resultado.erro }}</div>
+                    {% else %}
+                        <ul>
+                            <h5>Bairro: {{ resultado.bairro }}</h5>
+                            <br>
+                            <h5>Quadra: {{ resultado.quadra }}</h5>
+                            <br>
+                            <h5>Lote: {{ resultado.lote }}</h5>
+                            <br>
+                            <h5>Área total: {{ resultado.area_total }}m²</h5>
+                            <br>
+                            <h5>Macrozona: {{ resultado.macrozona }}</h5>
+                            <br>
+                            <h5>Zona: {{ resultado.zona }}</h5>
+                            <br>
+                            <h5>Área aproveitada: {{ resultado.area_aproveitada }}m²</h5>
+                            <br>
+                            <h5>Área por pavimento: {{ resultado.area_por_pavimento }}m²</h5>
+                            <br>
+                            <h5>Qtd. de pavimentos: {{ resultado.num_de_pavimentos }}</h5>
+                            <br>
+                            <h5>Taxa de ocupação: {{ resultado.taxa_de_ocupaçao}}% </h5>
+                            <br>
+                            <h5><a href="{{ resultado.link_do_overlay }}" target="_blank">Link do overlay</a></h5>
+                        </ul>
                     {% endif %}
-                </div>
+                {% endif %}
             </div>
         </div>
     </section>
+
+    <!-- Form dos apartamentos -->
+    {% if resultado %}
+        <section class="container">
+            <div class="pricing">
+                <div class="card">
+                    <div class="content">
+                        <form id="form-apts" action="/" method="post">
+                            <h5>Área dos apartamentos</h5>
+                            <div id="container-inputs">
+                                <label class="campo">Apartamento 1:
+                                    <input name="valor1" type="text">
+                                </label>
+
+                            </div>
+                        </form>
+                        <br><br>
+                        <pre id='saida-soma' style="white-space: pre-wrap;"></pre>
+                        <h5>Área com escadarias (Padrão = 70% da área do pavimento): 
+                            <span id="escadarias-value">{{ resultado.area_com_escadarias }}</span> m²
+                        </h5>
+                        <input type="range" id="escadarias-slider" 
+                               min="0" max="{{ resultado.area_por_pavimento }}" 
+                               value="{{ resultado.area_com_escadarias }}" step="0.10">
+                        <br>
+                    </div>
+                </div>
+            <div>
+    </section>
+    {% endif %}
+
+    <!-- Script para adicionar novos campos de apartamento -->
+    <script>
+        const container = document.getElementById('container-inputs');
+
+        // Função que adiciona um novo campo com índice dado
+        function adicionarInput(indice) {
+            const label = document.createElement('label');
+            label.className = 'campo';
+            label.innerText = `Apartamento ${indice}: `;
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = `valor${indice}`;
+
+            label.appendChild(input);
+            container.appendChild(label);
+
+            // registra o listener no novo input
+            registrarListener(input, indice);
+        }
+
+        // Registra um listener que, ao preencher este campo, adiciona o próximo
+        function registrarListener(input, indice) {
+            input.addEventListener('input', () => {
+                // só criamos o próximo se este for o último e estiver não-vazio
+                const todos = container.querySelectorAll('input');
+                const ultimo = todos[todos.length - 1];
+                if (input === ultimo && input.value.trim() !== '') {
+                    adicionarInput(indice + 1);
+                }
+            });
+        }
+
+        // Inicializa: pega o primeiro input e registra listener
+        const primeiro = container.querySelector('input');
+        registrarListener(primeiro, 1);
+
+    </script>
+
+
+    <!-- Script para checar se tem mais de 6 número ou se os últimos são 0000 -->
+    <script>
+        const campoCodigo = document.getElementById('campoCodigo');
+        const camposToggle = document.querySelectorAll('.toggle-field');
+
+        function atualizarVisibilidade() {
+            const val = campoCodigo.value;
+            const len = val.length;
+            // show se tiver < 6 caracteres OU os últimos 4 forem "0000"
+            const show = (len < 6) || (val.slice(-4) === '0000');
+            camposToggle.forEach(div => {
+            div.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        campoCodigo.addEventListener('input', atualizarVisibilidade);
+        document.addEventListener('DOMContentLoaded', atualizarVisibilidade);
+  </script>
+
+    <!-- Script para adicionar apartamentos e enviar os valores -->
+  <script>
+
+            // Helpers para inputs dinâmicos de apartamento + fetch automático
+            const container2 = document.getElementById('container-inputs');
+            const formApts = document.getElementById('form-apts');
+            const out = document.getElementById('saida-soma');
+
+            // Debounce para não spammar o servidor
+            function debounce(fn, delay = 300) {
+                let timer;
+                return (...args) => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => fn(...args), delay);
+                };
+            }
+
+            // Adiciona novo campo "Apartamento N"
+            function adicionarInput2(idx) {
+                const label = document.createElement('label');
+                label.className = 'campo';
+                label.textContent = `Apartamento ${idx}: `;
+                const inp = document.createElement('input');
+                inp.type = 'text';
+                inp.name = `valor${idx}`;
+                label.appendChild(inp);
+                container2.appendChild(label);
+                registrarListener(inp, idx);
+            }
+
+            // Lê valores e envia ao servidor
+            function enviarAtualizacao() {
+                const inputs = container2.querySelectorAll('input');
+                const valores = Array.from(inputs)
+                                .map(i => i.value.trim())
+                                .filter(v => v !== '');
+                formApts.classList.add('loading');
+                fetch('/atualizar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ valores })
+                })
+                .then(r => r.json())
+                .then(js => {
+                    formApts.classList.remove('loading');
+                    // Exibe JSON formatado; você pode customizar
+                    out.textContent = `Soma Total da área do pavimento: ${js.somaTotalPav}m²`;
+                })
+                .catch(err => {
+                    formApts.classList.remove('loading');
+                    console.error(err);
+                });
+            }
+
+            const enviarDebounced = debounce(enviarAtualizacao, 300);
+
+            // Quando digitar em um input:
+            function registrarListener(inp, idx) {
+                inp.addEventListener('input', () => {
+                    // 1) se for o último e não vazio, cria o próximo
+                    const todos = container2.querySelectorAll('input');
+                    if (inp === todos[todos.length - 1] && inp.value.trim() !== '') {
+                    adicionarInput2(idx + 1);
+                }
+                    // 2) dispara o fetch
+                    enviarDebounced();
+                });
+            }
+
+            // inicializa no primeiro campo
+            registrarListener(container2.querySelector('input'), 1);
+  </script>
+
+    <!-- Script para modificar o valor de area_por_pavimento -->
+  <script>
+    const slider = document.getElementById('escadarias-slider');
+    const value = document.getElementById('escadarias-value');
+    const mensagem = document.getElementById('escadarias-mensagem'); // Nova linha
+
+    // Função para atualizar a mensagem com base no valor
+    function atualizarMensagem(novoValor) {
+        const areaPorPavimento = parseFloat("{{ resultado.area_por_pavimento }}");
+        if (novoValor > areaPorPavimento) {
+            mensagem.textContent = "Aviso: A área com escadarias excede a área por pavimento!";
+            mensagem.style.color = "red";
+        } else {
+            mensagem.textContent = "Valor válido.";
+            mensagem.style.color = "green";
+        }
+    }
+
+    slider.oninput = function() {
+        const novoValor = parseFloat(this.value);
+        value.textContent = novoValor.toFixed(2); // Atualiza o valor exibido
+        atualizarMensagem(novoValor); // Atualiza a mensagem
+
+        // Se você precisar enviar o novo valor para o servidor,
+        // você pode adicionar um fetch aqui.
+        // Exemplo:
+        
+        fetch('/atualizar_escadarias', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nova_area: novoValor })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+        
+    }
+
+    // Chamada inicial para atualizar a mensagem com o valor inicial
+    atualizarMensagem(parseFloat(slider.value));
+  </script>
+
 </body>
 </html>
